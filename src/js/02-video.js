@@ -1,18 +1,17 @@
 import Player from '@vimeo/player';
 
-const LOCALSTORAGE_KEY = 'videoplayer-current-time';
+const throttle = require('lodash.throttle');
 
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
+const LOCALSTORAGE_KEY = 'videoplayer-current-time';
 
-player.on('timeupdate', function (timeupdate) {
+const { seconds = 0 } = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) ?? 0);
+
+player.on('timeupdate', throttle(setSecondsInLocalStorage, 1000));
+
+player.setCurrentTime(seconds);
+
+function setSecondsInLocalStorage(timeupdate) {
   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(timeupdate));
-});
-
-player.getVideoTitle().then(function (title) {
-  console.log('title:', title);
-});
-
-const onPlay = function (data) {
-  // data is an object containing properties specific to that event
-};
+}
