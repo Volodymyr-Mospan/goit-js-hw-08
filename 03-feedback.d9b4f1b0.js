@@ -1,0 +1,2 @@
+const e=document.querySelector(".feedback-form"),t=[...e.querySelectorAll("[name]")];t.forEach((e=>{localStorage.getItem(`${e.name}`)&&(e.value=localStorage.getItem(`${e.name}`))})),e.addEventListener("input",(function(e){!function(e,t){localStorage.setItem(`${e}`,t.target.value)}(e.target.name,e)})),e.addEventListener("submit",(function(a){a.preventDefault(),e.reset(),t.forEach((e=>localStorage.removeItem(`${e.name}`)))}));
+//# sourceMappingURL=03-feedback.d9b4f1b0.js.map
