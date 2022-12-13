@@ -1,5 +1,6 @@
-const formRef = document.querySelector(`.feedback-form`);
+import throttle from 'lodash.throttle';
 
+const formRef = document.querySelector(`.feedback-form`);
 const formElements = [...formRef.querySelectorAll('[name]')];
 
 formElements.forEach(el => {
@@ -8,7 +9,7 @@ formElements.forEach(el => {
   }
 });
 
-formRef.addEventListener('input', onInputForm);
+formRef.addEventListener('input', throttle(onInputForm, 500));
 formRef.addEventListener('submit', onSubmit);
 
 function onInputForm(eve) {
@@ -21,6 +22,11 @@ function setInputValueInStorage(name, eve) {
 
 function onSubmit(eve) {
   eve.preventDefault();
+  let formData = {};
+  formElements.forEach(el => {
+    formData[el.name] = el.value;
+    localStorage.removeItem(`${el.name}`);
+  });
+  console.log(formData);
   formRef.reset();
-  formElements.forEach(el => localStorage.removeItem(`${el.name}`));
 }
